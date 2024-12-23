@@ -1,0 +1,92 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+struct Question {
+    string questionText;
+    vector<string> options;
+    int correctAnswerIndex; 
+};
+
+int askQuestions(const vector<Question>& questions) {
+    int score = 0;
+
+    for (const auto& q : questions) {
+        cout << q.questionText << endl;
+        for (int i = 0; i < q.options.size(); ++i) {
+            cout << i + 1 << ". " << q.options[i] << endl;
+        }
+
+        int userAnswer;
+        cout << "Your answer (1-" << q.options.size() << "): ";
+        cin >> userAnswer;
+
+        
+        if (userAnswer - 1 == q.correctAnswerIndex) {
+            score++;
+        }
+        cout << endl; 
+    }
+
+    return score;
+}
+
+
+int calculateIQ(int score, int totalQuestions) {
+    return (static_cast<double>(score) / totalQuestions) * 100; // Simple scaling
+}
+
+int main() {
+
+    vector<Question> questions = {
+        // Logical Reasoning Questions
+        {"If all roses are flowers and some flowers fade quickly, can we conclude that some roses fade quickly?", 
+         {"Yes", "No", "Cannot be determined"}, 2},
+        {"A man is looking at a picture of someone. His friend asks, \"Who is it you are looking at?\" The man replies, \"Brothers and sisters, I have none. But that man's father is my father's son.\" Who is the man in the picture?", 
+         {"His son", "His brother", "Himself"}, 0},
+        {"If it is raining, then the ground is wet. The ground is not wet. What can we conclude?", 
+         {"It is not raining", "It is raining", "Cannot be determined"}, 0},
+
+        // Pattern Recognition Questions
+        {"What comes next in the series: 1, 4, 9, 16, 25, ?", 
+         {"30", "36", "40"}, 1},
+        {"Which number does not belong in the following series: 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 25?", 
+         {"24", "25", "22"}, 1},
+        {"What is the next number in the series: 3, 6, 11, 18, 27, ?", 
+         {"38", "39", "40"}, 0},
+        {"Find the missing number: 5, 10, 20, ?, 80", 
+         {"30", "40", "50"}, 1},
+
+        // Mathematical Aptitude Questions
+        {"What is 25% of 200?", 
+         {"25", "50", "75"}, 1},
+        {"If a rectangle has a length of 10 cm and a width of 5 cm, what is its area?", 
+         {"15 cm²", "50 cm²", "100 cm²"}, 1},
+        {"Solve for x: 2x + 3 = 11", 
+         {"2", "3", "4"}, 1},
+        {"If a train travels 60 miles in 1 hour, how far will it travel in 3 hours?", 
+         {"120 miles", "180 miles", "240 miles"}, 1}
+    };
+
+    cout << "Welcome to the IQ Calculator!" << endl;
+    cout << "You will be asked a series of questions. Answer them to the best of your ability." << endl;
+
+    int score = askQuestions(questions);
+    int totalQuestions = questions.size();
+
+    int iqScore = calculateIQ(score, totalQuestions);
+
+    cout << "Your IQ Score: " << iqScore << endl;
+
+    if (iqScore < 70) {
+        cout << "Below average." << endl;
+    } else if (iqScore < 100) {
+        cout << "Average." << endl;
+    } else {
+        cout << "Above average." << endl;
+    }
+
+    return 0;
+}
